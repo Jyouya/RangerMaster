@@ -54,6 +54,7 @@ windower.register_event('ipc message', function(msg)
 				['Target'] = target,
 				['Player Index'] = player.index,
 			}))
+			windower.send_command('gs c face %d':format(target)) -- my gearswap has  auto-face-target, this makes keeps them from fighting.
 			facetarget()
 			delay = .2
 			start_ra = true
