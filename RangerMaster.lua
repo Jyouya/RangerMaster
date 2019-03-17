@@ -61,6 +61,7 @@ windower.register_event('ipc message', function(msg)
 		end
 	elseif cmd:lower() == 'ws' then -- tell every cor/rng to ws
 		if args[1] then
+			start_ra = false
 			target = args[1]
 			local player = windower.ffxi.get_player()
 			packets.inject(packets.new('incoming', 0x058, {
