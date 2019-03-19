@@ -35,6 +35,9 @@ windower.register_event('addon command', function(...)
 		windower.send_ipc_message('ws %d':format(t.id))
 	elseif cmd == 'multishot' then
 		windower.send_ipc_message('multishot')
+	elseif cmd == 'assault' then
+		local t = windower.ffxi.get_mob_by_target('t')
+		windower.send_ipc_message('assault %d':format(t.id))
 	end
 end)
 
@@ -75,6 +78,17 @@ windower.register_event('ipc message', function(msg)
 		end
 	elseif cmd:lower() == 'multishot' then
 		windower.chat.input("/ja \%s\" <me>":format(job_ja[windower.ffxi.get_player().main_job]))
+	elseif cmd:lower() == 'assault' then
+		if args[1] then
+			target = args[1]
+			local player = windower.ffxi.get_player()
+			packets.inject(packets.new('incoming', 0x058, {
+				['Player'] = player.id,
+				['Target'] = target,
+				['Player Index'] = player.index,
+			}))
+			windower.chat.input("/pet assault %d":format(target))
+		end
 	end
 end)
 
