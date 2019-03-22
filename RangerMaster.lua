@@ -11,6 +11,7 @@ start_ra = false
 
 prerender_event = nil
 nexttime = os.clock()
+timeout = nil
 delay = 1
 
 job_ws = {
@@ -61,6 +62,7 @@ windower.register_event('ipc message', function(msg)
 			facetarget()
 			delay = .2
 			start_ra = true
+			timeout = os.clock() + 5
 		end
 	elseif cmd:lower() == 'ws' then -- tell every cor/rng to ws
 		if args[1] then
@@ -99,6 +101,7 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
             if not (p['HP %'] > 0) then
                 target = nil
 				start_ra = false
+				timeout = nil
             end
         end
 	elseif start_ra and id == 0x028 then -- detect when we start shooting
@@ -107,6 +110,7 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 		if parse.Actor == player.id then
 			if parse.Category == 12 then -- we did an RA
 				start_ra = false
+				timeout = nil
 			end
 		end
     end
@@ -166,6 +170,11 @@ function prerender()
 		delay = 0.2
 		if start_ra then
 			windower.chat.input("/ra %d":format(target))
+		end
+		if timeout and timeout < os.clock() then
+			target = nil
+			start_ra = false
+			timeout = nil
 		end
 	end
 end
