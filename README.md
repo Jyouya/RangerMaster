@@ -10,4 +10,4 @@ Commands:
   
 //rm ws -- all other boxes perform trueflight/leaden salute on the sender's target.
 
-//ra multishot -- all other boxes perform Triple Shot or Double Shot
+//rm multishot -- all other boxes perform Triple Shot or Double Shot
